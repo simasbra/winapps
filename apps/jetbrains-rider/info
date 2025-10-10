@@ -1,0 +1,17 @@
+# GNOME shortcut name
+NAME="JetBrains Rider Windows"
+
+# Used for descriptions and window class
+FULL_NAME="Jetbrains Rider"
+
+# The executable inside windows
+WIN_EXECUTABLE="C:\Program Files\JetBrains\JetBrains Rider 2025.2.3\bin\rider64.exe"
+
+# GNOME categories
+CATEGORIES="WinApps;JetBrains"
+
+# GNOME mimetypes
+MIME_TYPES=""
+
+# System Icon
+ICON="JetBrains Rider"
