@@ -39,7 +39,7 @@ readonly SYS_BIN_PATH="/usr/local/bin"                  # UNIX path to 'bin' dir
 readonly USER_BIN_PATH="${HOME}/.local/bin"             # UNIX path to 'bin' directory for a '--user' WinApps installation.
 readonly USER_BIN_PATH_WIN='\\tsclient\home\.local\bin' # WINDOWS path to 'bin' directory for a '--user' WinApps installation.
 # 'SOURCE'
-readonly SYS_SOURCE_PATH="${SYS_BIN_PATH}/winapps-src" # UNIX path to WinApps source directory for a '--system' WinApps installation.
+readonly SYS_SOURCE_PATH="${SYS_BIN_PATH}/winapps-src"   # UNIX path to WinApps source directory for a '--system' WinApps installation.
 readonly USER_SOURCE_PATH="${USER_BIN_PATH}/winapps-src" # UNIX path to WinApps source directory for a '--user' WinApps installation.
 # 'APP'
 readonly SYS_APP_PATH="/usr/share/applications"                        # UNIX path to 'applications' directory for a '--system' WinApps installation.
@@ -158,7 +158,7 @@ function waGetSourceCode() {
     fi
 
     if [[ ! -d "$SOURCE_PATH" ]]; then
-        $SUDO git clone --recurse-submodules --remote-submodules https://github.com/winapps-org/winapps.git "$SOURCE_PATH"
+        $SUDO git clone --recurse-submodules --remote-submodules https://github.com/simasbra/winapps.git "$SOURCE_PATH"
     else
         echo -e "${INFO_TEXT}WinApps installation already present at ${CLEAR_TEXT}${COMMAND_TEXT}${SOURCE_PATH}${CLEAR_TEXT}${INFO_TEXT}. Updating...${CLEAR_TEXT}"
         $SUDO git -C "$SOURCE_PATH" pull --no-rebase
@@ -192,7 +192,7 @@ function waGetInquirer() {
 
     if [ -d "$SYS_SOURCE_PATH" ]; then
         INQUIRER=$SYS_SOURCE_PATH/$INQUIRER_PATH
-    elif [ -d "$USER_SOURCE_PATH" ] ; then
+    elif [ -d "$USER_SOURCE_PATH" ]; then
         INQUIRER=$USER_SOURCE_PATH/$INQUIRER_PATH
     else
         INQUIRER="/tmp/waInquirer.sh"
@@ -216,37 +216,37 @@ function waCheckInput() {
         # Parse arguments.
         for argument in "$@"; do
             case "$argument" in
-            "--user")
-                OPT_USER=1
-                ;;
-            "--system")
-                OPT_SYSTEM=1
-                ;;
-            "--setupAllOfficiallySupportedApps")
-                OPT_AOSA=1
-                ;;
-            "--uninstall")
-                OPT_UNINSTALL=1
-                ;;
-            "--help")
-                waUsage
-                exit 0
-                ;;
-            *)
-                # Display the error type.
-                echo -e "${ERROR_TEXT}ERROR:${CLEAR_TEXT} ${BOLD_TEXT}INVALID ARGUMENT.${CLEAR_TEXT}"
+                "--user")
+                    OPT_USER=1
+                    ;;
+                "--system")
+                    OPT_SYSTEM=1
+                    ;;
+                "--setupAllOfficiallySupportedApps")
+                    OPT_AOSA=1
+                    ;;
+                "--uninstall")
+                    OPT_UNINSTALL=1
+                    ;;
+                "--help")
+                    waUsage
+                    exit 0
+                    ;;
+                *)
+                    # Display the error type.
+                    echo -e "${ERROR_TEXT}ERROR:${CLEAR_TEXT} ${BOLD_TEXT}INVALID ARGUMENT.${CLEAR_TEXT}"
 
-                # Display the error details.
-                echo -e "${INFO_TEXT}Unsupported argument${CLEAR_TEXT} ${COMMAND_TEXT}${argument}${CLEAR_TEXT}${INFO_TEXT}.${CLEAR_TEXT}"
+                    # Display the error details.
+                    echo -e "${INFO_TEXT}Unsupported argument${CLEAR_TEXT} ${COMMAND_TEXT}${argument}${CLEAR_TEXT}${INFO_TEXT}.${CLEAR_TEXT}"
 
-                # Display the suggested action(s).
-                echo "--------------------------------------------------------------------------------"
-                waUsage
-                echo "--------------------------------------------------------------------------------"
+                    # Display the suggested action(s).
+                    echo "--------------------------------------------------------------------------------"
+                    waUsage
+                    echo "--------------------------------------------------------------------------------"
 
-                # Terminate the script.
-                return "$EC_BAD_ARGUMENT"
-                ;;
+                    # Terminate the script.
+                    return "$EC_BAD_ARGUMENT"
+                    ;;
             esac
         done
     else
@@ -438,14 +438,14 @@ function waFixScale() {
         OLD_SCALE="$RDP_SCALE"
 
         # Calculate the absolute differences.
-        local DIFF_1=$(( RDP_SCALE > VALID_SCALE_1 ? RDP_SCALE - VALID_SCALE_1 : VALID_SCALE_1 - RDP_SCALE ))
-        local DIFF_2=$(( RDP_SCALE > VALID_SCALE_2 ? RDP_SCALE - VALID_SCALE_2 : VALID_SCALE_2 - RDP_SCALE ))
-        local DIFF_3=$(( RDP_SCALE > VALID_SCALE_3 ? RDP_SCALE - VALID_SCALE_3 : VALID_SCALE_3 - RDP_SCALE ))
+        local DIFF_1=$((RDP_SCALE > VALID_SCALE_1 ? RDP_SCALE - VALID_SCALE_1 : VALID_SCALE_1 - RDP_SCALE))
+        local DIFF_2=$((RDP_SCALE > VALID_SCALE_2 ? RDP_SCALE - VALID_SCALE_2 : VALID_SCALE_2 - RDP_SCALE))
+        local DIFF_3=$((RDP_SCALE > VALID_SCALE_3 ? RDP_SCALE - VALID_SCALE_3 : VALID_SCALE_3 - RDP_SCALE))
 
         # Set the final scale to the valid scale value with the smallest absolute difference.
-        if (( DIFF_1 <= DIFF_2 && DIFF_1 <= DIFF_3 )); then
+        if ((DIFF_1 <= DIFF_2 && DIFF_1 <= DIFF_3)); then
             RDP_SCALE="$VALID_SCALE_1"
-        elif (( DIFF_2 <= DIFF_1 && DIFF_2 <= DIFF_3 )); then
+        elif ((DIFF_2 <= DIFF_1 && DIFF_2 <= DIFF_3)); then
             RDP_SCALE="$VALID_SCALE_2"
         else
             RDP_SCALE="$VALID_SCALE_3"
@@ -917,7 +917,7 @@ function waCheckContainerRunning() {
 
     # Determine the state of the container.
     CONTAINER_STATE=$("$WAFLAVOR" ps --all --filter name="WinApps" --format '{{.Status}}')
-    CONTAINER_STATE=${CONTAINER_STATE,,} # Convert the string to lowercase.
+    CONTAINER_STATE=${CONTAINER_STATE,,}   # Convert the string to lowercase.
     CONTAINER_STATE=${CONTAINER_STATE%% *} # Extract the first word.
 
     # Determine the compose command.
@@ -1381,12 +1381,12 @@ function waConfigureOfficiallySupported() {
 # Role: Allow the user to select which officially supported applications to configure.
 function waConfigureApps() {
     # Declare variables.
-    local OSA_LIST=()      # Stores a list of all officially supported applications installed on Windows.
-    local APPS=()          # Stores a list of both the simplified and full names of each installed officially supported application.
-    local OPTIONS=()       # Stores a list of options presented to the user.
-    local APP_INSTALL=""   # Stores the option selected by the user.
-    local SELECTED_APPS=() # Stores the officially supported applications selected by the user.
-    local TEMP_ARRAY=()    # Temporary array used for sorting elements of an array.
+    local OSA_LIST=()       # Stores a list of all officially supported applications installed on Windows.
+    local APPS=()           # Stores a list of both the simplified and full names of each installed officially supported application.
+    local OPTIONS=()        # Stores a list of options presented to the user.
+    local APP_INSTALL=""    # Stores the option selected by the user.
+    local SELECTED_APPS=()  # Stores the officially supported applications selected by the user.
+    local TEMP_ARRAY=()     # Temporary array used for sorting elements of an array.
     declare -A APP_DATA_MAP # Associative array to map short names back to their full data line.
 
     # Read the list of officially supported applications that are installed on Windows into an array, returning an empty array if no such files exist.

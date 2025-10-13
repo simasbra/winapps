@@ -16,11 +16,11 @@ services:
       # https://github.com/dockur/windows?tab=readme-ov-file#how-do-i-install-a-custom-image
       VERSION: "10"
       RAM_SIZE: "16G" # RAM allocated to the Windows VM.
-      CPU_CORES: "2" # CPU cores allocated to the Windows VM.
+      CPU_CORES: "3" # CPU cores allocated to the Windows VM.
       DISK_SIZE: "64G" # Size of the primary hard disk.
       # DISK2_SIZE: "32G" # Uncomment to add an additional hard disk to the Windows VM. Ensure it is mounted as a volume below.
-      USERNAME: "simas" # Edit here to set a custom Windows username. The default is 'MyWindowsUser'.
-      PASSWORD: "simas" # Edit here to set a password for the Windows user. The default is 'MyWindowsPassword'.
+      USERNAME: "$FUCKING_WIN_USERNAME" # Edit here to set a custom Windows username. The default is 'MyWindowsUser'.
+      PASSWORD: "$FUCKING_WIN_PASSWORD" # Edit here to set a password for the Windows user. The default is 'MyWindowsPassword'.
       HOME: "${HOME}" # Set path to Linux user home folder.
     ports:
       - 8006:8006 # Map '8006' on Linux host to '8006' on Windows VM --> For VNC Web Interface @ http://127.0.0.1:8006.
